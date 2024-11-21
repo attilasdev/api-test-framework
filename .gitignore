@@ -32,3 +32,17 @@ allure-report/
 # OS specific
 .DS_Store
 Thumbs.db
+
+# Local config
+src/main/resources/config/local.properties
+src/test/resources/config/local.properties
+
+# Credentials
+*.pem
+*.key
+*.token
+
+# Build files
+target/
+build/
+out/

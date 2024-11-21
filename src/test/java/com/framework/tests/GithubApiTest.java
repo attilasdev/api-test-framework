@@ -1,38 +1,56 @@
 package com.framework.tests;
 
 import com.framework.base.BaseTest;
-import com.framework.model.Repository;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.restassured.RestAssured;
+import com.framework.validation.assertions.ResponseAssertions;
+import com.framework.validation.verifier.ResponseVerifier;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.framework.validation.matchers.CustomMatchers.*;
+import static com.framework.validation.matchers.ResponseMatchers.*;
+import org.hamcrest.MatcherAssert;
 
-@Epic("GitHub API Tests")
-@Feature("Repository Operations")
+
 public class GithubApiTest extends BaseTest {
 
     @Test
-    @Description("Verify getting repository information")
-    void shouldGetRepositoryInformation() {
-        // Enable logging using the correct method
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-
-        System.out.println("Making request to GitHub API...");
-        
-        Repository repo = restClient.getRequestSpec()
+    void shouldValidateRepositoryResponse() {
+        Response response = restClient.getRequestSpec()
             .when()
                 .get("/repos/octocat/Hello-World")
             .then()
-                .log().all()  // Log the response
-                .statusCode(200)
-                .extract().as(Repository.class);
+                .extract().response();
 
-        System.out.println("Repository name: " + repo.getName());
-        System.out.println("Full name: " + repo.getFullName());
+        ResponseVerifier.verify(response)
+            .statusCode(200)
+            .schema("schemas/repository-schema.json")
+            .assertResponse(resp -> {
+                ResponseAssertions.assertThat(resp)
+                    .hasResponseTime(2000)
+                    .hasHeader("Content-Type")
+                    .hasHeaderValue("Content-Type", "application/json")
+                    .hasJsonPath("name")
+                    .hasJsonPath("owner.login");
+                
+                // Verify specific field formats
+                String createdAt = resp.jsonPath().getString("created_at");
+                org.hamcrest.MatcherAssert.assertThat(createdAt, isISODateTime());
+            });
+    }
 
-        assertThat(repo.getName()).isEqualTo("Hello-World");
-        assertThat(repo.getFullName()).isEqualTo("octocat/Hello-World");
+    @Test
+    void shouldValidateRepositoryResponseWithMatchers() {
+        Response response = restClient.getRequestSpec()
+            .when()
+                .get("/repos/octocat/Hello-World")
+            .then()
+                .extract().response();
+
+        // Using the custom matchers
+        MatcherAssert.assertThat(response, hasJsonPath("name"));
+        MatcherAssert.assertThat(response, hasResponseTimeBelow(2000));
+        MatcherAssert.assertThat(response, hasContentType("application/json"));
+        MatcherAssert.assertThat(response, hasHeader("X-GitHub-Media-Type"));
+        MatcherAssert.assertThat(response, hasJsonPathWithValue("name", "Hello-World"));
+        MatcherAssert.assertThat(response, hasNonEmptyBody());
     }
 }
