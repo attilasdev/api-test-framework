@@ -1,12 +1,3 @@
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-
 # IDE files
 .idea/
 *.iml
@@ -14,35 +5,90 @@ dependency-reduced-pom.xml
 .settings/
 .project
 .classpath
-
-# Compiled files
-*.class
-*.jar
-*.war
-
-# Logs
-*.log
-logs/
-
-# Allure
-allure-results/
-allure-report/
-.allure/
-
-# OS specific
-.DS_Store
-Thumbs.db
-
-# Local config
-src/main/resources/config/local.properties
-src/test/resources/config/local.properties
-
-# Credentials
-*.pem
-*.key
-*.token
+*.code-workspace
 
 # Build files
 target/
 build/
 out/
+bin/
+*.class
+*.jar
+*.war
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.flattened-pom.xml
+
+# Gradle
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# Test reports and logs
+test-output/
+allure-results/
+allure-report/
+.allure/
+logs/
+*.log
+report/
+reports/
+screenshots/
+
+# Local configuration
+src/main/resources/config/local.properties
+src/test/resources/config/local.properties
+*.properties.local
+application-local.properties
+application-local.yml
+
+# Security and credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.token
+.env
+credentials.json
+secret.properties
+
+# OS specific
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+.*.swp
+.~lock.*
+
+# Coverage reports
+coverage/
+.coverage
+coverage.xml
+*.coveragexml
+jacoco.xml
+.scannerwork/
+
+# Debug files
+*.debug
+*.dmp
+hs_err_pid*
+replay_pid*

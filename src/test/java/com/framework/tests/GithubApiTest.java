@@ -27,7 +27,7 @@ public class GithubApiTest extends BaseTest {
                 ResponseAssertions.assertThat(resp)
                     .hasResponseTime(2000)
                     .hasHeader("Content-Type")
-                    .hasHeaderValue("Content-Type", "application/json")
+                    .hasHeaderValue("Content-Type", "application/json; charset=utf-8")
                     .hasJsonPath("name")
                     .hasJsonPath("owner.login");
                 

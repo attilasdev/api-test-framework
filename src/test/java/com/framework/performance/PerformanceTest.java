@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
+import com.framework.performance.config.PerformanceConfig;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class PerformanceTest {
@@ -24,10 +25,10 @@ public class PerformanceTest {
 
     @BeforeAll
     static void setup() {
-        // Start WireMock server
-        wireMockServer = new WireMockServer(wireMockConfig().port(8089));
+        // Use port from config
+        wireMockServer = new WireMockServer(wireMockConfig().port(PerformanceConfig.PORT));
         wireMockServer.start();
-        WireMock.configureFor("localhost", 8089);
+        WireMock.configureFor("localhost", PerformanceConfig.PORT);
 
         // Setup mock response
         stubFor(get(urlEqualTo("/api/test"))
@@ -54,7 +55,7 @@ public class PerformanceTest {
                     long startTime = System.currentTimeMillis();
                     
                     Response response = io.restassured.RestAssured.given()
-                        .baseUri("http://localhost:8089")
+                        .baseUri(PerformanceConfig.BASE_URL)
                         .when()
                         .get("/api/test")
                         .then()

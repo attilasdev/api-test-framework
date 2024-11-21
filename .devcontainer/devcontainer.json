@@ -1,15 +1,37 @@
 {
-    "name": "Java Testing Framework",
-    "dockerFile": "Dockerfile",
+    "name": "Java",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "none",
+            "installMaven": "true",
+            "installGradle": "false"
+        }
+    },
     "customizations": {
         "vscode": {
             "extensions": [
                 "vscjava.vscode-java-pack",
                 "redhat.java",
-                "vscjava.vscode-gradle",
-                "richardwillis.vscode-gradle-extension-pack"
+                "vscjava.vscode-maven"
             ]
         }
     },
-    "remoteUser": "vscode"
+    "forwardPorts": [1234, 8090, 8091],
+    "portsAttributes": {
+        "1234": {
+            "label": "Allure Report",
+            "onAutoForward": "notify"
+        },
+        "8090": {
+            "label": "Performance Test",
+            "onAutoForward": "notify"
+        },
+        "8091": {
+            "label": "Security Test",
+            "onAutoForward": "notify"
+        }
+    }
 }

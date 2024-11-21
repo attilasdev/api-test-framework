@@ -8,15 +8,16 @@ import io.restassured.response.Response;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
+import com.framework.security.config.SecurityConfig;
 
 public class SecurityTest {
     private static WireMockServer wireMockServer;
 
     @BeforeAll
     static void setup() {
-        wireMockServer = new WireMockServer(wireMockConfig().port(8089));
+        wireMockServer = new WireMockServer(wireMockConfig().port(SecurityConfig.PORT));
         wireMockServer.start();
-        configureFor("localhost", 8089);
+        configureFor("localhost", SecurityConfig.PORT);
 
         // Setup mock endpoints
         stubFor(get(urlEqualTo("/api/secure"))
@@ -40,7 +41,7 @@ public class SecurityTest {
     void testAuthenticationRequired() {
         // Test without auth token
         Response noAuthResponse = io.restassured.RestAssured.given()
-            .baseUri("http://localhost:8089")
+            .baseUri(SecurityConfig.BASE_URL)
             .when()
             .get("/api/secure")
             .then()
@@ -51,7 +52,7 @@ public class SecurityTest {
 
         // Test with invalid auth token
         Response invalidAuthResponse = io.restassured.RestAssured.given()
-            .baseUri("http://localhost:8089")
+            .baseUri(SecurityConfig.BASE_URL)
             .header("Authorization", "Bearer invalid_token")
             .when()
             .get("/api/secure")
@@ -67,7 +68,7 @@ public class SecurityTest {
         String xssPayload = "<script>alert('xss')</script>";
         
         Response response = io.restassured.RestAssured.given()
-            .baseUri("http://localhost:8089")
+            .baseUri(SecurityConfig.BASE_URL)
             .queryParam("input", xssPayload)
             .when()
             .get("/api/secure")
@@ -84,7 +85,7 @@ public class SecurityTest {
         String sqlInjectionPayload = "' OR '1'='1";
         
         Response response = io.restassured.RestAssured.given()
-            .baseUri("http://localhost:8089")
+            .baseUri(SecurityConfig.BASE_URL)
             .queryParam("id", sqlInjectionPayload)
             .when()
             .get("/api/secure")
@@ -98,7 +99,7 @@ public class SecurityTest {
     @Test
     void testSecureHeaders() {
         Response response = io.restassured.RestAssured.given()
-            .baseUri("http://localhost:8089")
+            .baseUri(SecurityConfig.BASE_URL)
             .header("Authorization", "Bearer valid_token")
             .when()
             .get("/api/secure")
