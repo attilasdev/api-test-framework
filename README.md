@@ -47,7 +47,7 @@ A modern test automation framework for REST APIs built with Java, REST Assured, 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/api-test-framework.git
+git clone https://github.com/attilasdev/api-test-framework.git
 cd api-test-framework
 ```
 
