@@ -1,29 +1,34 @@
 # Maven
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
 
-# IntelliJ IDEA
+# IDE files
 .idea/
-*.iws
 *.iml
-*.ipr
-
-# VS Code
 .vscode/
+.settings/
+.project
+.classpath
 
-# Allure
-.allure/
-allure-results/
+# Compiled files
+*.class
+*.jar
+*.war
 
 # Logs
-logs/
 *.log
+logs/
 
-# Properties files
-src/main/resources/local.properties
+# Allure
+allure-results/
+allure-report/
+.allure/
 
-# OS-specific files
+# OS specific
 .DS_Store
 Thumbs.db
