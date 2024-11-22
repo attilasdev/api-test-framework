@@ -168,3 +168,10 @@ Reports include:
 - [Allure Framework](https://docs.qameta.io/allure/) for reporting
 - [GitHub API](https://docs.github.com/en/rest) for providing a test API
 
+## License
+This is a portfolio project created for educational purposes.
+Feel free to use, modify and learn from it.
+
+---
+
+Made with ❤️ by Attila
